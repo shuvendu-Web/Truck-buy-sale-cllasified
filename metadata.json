@@ -1,0 +1,7 @@
+{
+  "name": "DriveDeal - Used Vehicle Marketplace",
+  "description": "Premium classified vehicle marketplace to buy and sell cars, bikes, trucks, and SUVs with instant seller contact, admin approvals, and real-time interest tracking.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+

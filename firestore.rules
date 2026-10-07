@@ -1,0 +1,98 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+    
+    function isAdmin() {
+      return isSignedIn() && (
+        request.auth.token.email == 'shuvendu.dhenki@gmail.com' ||
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+      );
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128;
+    }
+
+    // Default deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Users collection
+    match /users/{userId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && isOwner(userId);
+      allow update: if isSignedIn() && (isOwner(userId) || isAdmin());
+      allow delete: if isAdmin();
+    }
+
+    // Vehicles collection
+    match /vehicles/{vehicleId} {
+      // Public can read approved/published or sold vehicles. Owner or admin can read any status.
+      allow read: if resource == null || resource.data.status in ['approved', 'published', 'sold'] || (isSignedIn() && (resource.data.sellerId == request.auth.uid || isAdmin()));
+      
+      // Creating vehicle: authenticated user setting sellerId to self
+      allow create: if isSignedIn() && request.resource.data.sellerId == request.auth.uid;
+      
+      // Update vehicle: Owner can update their own listing; Admin can update any listing
+      allow update: if isSignedIn() && (resource.data.sellerId == request.auth.uid || isAdmin());
+      
+      // Delete vehicle: Owner or Admin
+      allow delete: if isSignedIn() && (resource.data.sellerId == request.auth.uid || isAdmin());
+    }
+
+    // Interests collection (Buyer inquiries)
+    match /interests/{interestId} {
+      allow read: if isSignedIn() && (resource.data.buyerId == request.auth.uid || resource.data.sellerId == request.auth.uid || isAdmin());
+      allow create: if true; // Allow guest/buyer inquiries
+      allow update: if isSignedIn() && (resource.data.sellerId == request.auth.uid || isAdmin());
+      allow delete: if isAdmin();
+    }
+
+    // Messages collection
+    match /messages/{messageId} {
+      allow read: if isSignedIn() && (resource.data.senderId == request.auth.uid || resource.data.receiverId == request.auth.uid || isAdmin());
+      allow create: if isSignedIn() && request.resource.data.senderId == request.auth.uid;
+      allow update: if isSignedIn() && (resource.data.receiverId == request.auth.uid || isAdmin());
+      allow delete: if isAdmin();
+    }
+
+    // Categories, Brands, Locations (Metadata collections)
+    match /categories/{categoryId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /brands/{brandId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /locations/{locationId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /favorites/{favId} {
+      allow read, write: if isSignedIn();
+    }
+    match /reports/{reportId} {
+      allow create: if true;
+      allow read, write: if isAdmin();
+    }
+    match /notifications/{notifId} {
+      allow read, update, delete: if isSignedIn() && (resource.data.userId == request.auth.uid || isAdmin());
+      allow create: if true;
+    }
+    match /adminLogs/{logId} {
+      allow read, write: if isAdmin();
+    }
+  }
+}
