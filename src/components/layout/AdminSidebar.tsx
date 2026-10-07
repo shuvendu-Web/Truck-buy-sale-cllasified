@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useMarketplace } from '../../context/MarketplaceContext';
 import { useAuth } from '../../context/AuthContext';
 import { 
@@ -29,6 +29,7 @@ interface AdminSidebarProps {
 export const AdminSidebar: React.FC<AdminSidebarProps> = ({ currentPath, onNavigate }) => {
   const { pendingApprovalsCount, reports } = useMarketplace();
   const { logout, user } = useAuth();
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   const pendingReportsCount = reports.filter(r => r.status === 'Pending').length;
 
@@ -49,42 +50,47 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({ currentPath, onNavig
   ];
 
   return (
-    <aside className="w-64 bg-slate-900 text-slate-300 flex flex-col h-screen sticky top-0 shrink-0 select-none border-r border-slate-800 z-30">
+    <aside className={`${isCollapsed ? 'w-20' : 'w-64'} bg-slate-900 text-slate-300 flex flex-col h-screen sticky top-0 shrink-0 select-none border-r border-slate-800 z-30 transition-all duration-300`}>
       {/* Brand Header */}
-      <div className="p-5 border-b border-slate-800 flex items-center justify-between">
+      <div className={`p-4 border-b border-slate-800 flex items-center ${isCollapsed ? 'justify-center' : 'justify-between'}`}>
         <div 
           onClick={() => onNavigate('/')}
           className="flex items-center gap-2.5 cursor-pointer group"
+          title="SatyaDeal Admin"
         >
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-500 to-indigo-600 flex items-center justify-center text-white shadow-md">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-500 to-indigo-600 flex items-center justify-center text-white shadow-md shrink-0">
             <Car className="w-5 h-5" />
           </div>
-          <div>
-            <span className="text-lg font-bold text-white tracking-tight flex items-center gap-1.5">
-              <span className="text-green-500">Satya</span><span className="text-blue-400">Deal</span>
-              <span className="text-[10px] uppercase font-extrabold bg-blue-500/20 text-blue-400 px-1.5 py-0.5 rounded-md border border-blue-500/30">
-                Admin
+          {!isCollapsed && (
+            <div>
+              <span className="text-lg font-bold text-white tracking-tight flex items-center gap-1.5">
+                <span className="text-green-500">Satya</span><span className="text-blue-400">Deal</span>
+                <span className="text-[10px] uppercase font-extrabold bg-blue-500/20 text-blue-400 px-1.5 py-0.5 rounded-md border border-blue-500/30">
+                  Admin
+                </span>
               </span>
-            </span>
-            <span className="block text-[10px] text-slate-400 -mt-0.5">Super Admin Portal</span>
-          </div>
+              <span className="block text-[10px] text-slate-400 -mt-0.5">Super Admin Portal</span>
+            </div>
+          )}
         </div>
       </div>
 
       {/* Admin User Mini Card */}
-      <div className="p-4 mx-3 my-3 rounded-2xl bg-slate-800/60 border border-slate-700/50 flex items-center gap-3">
+      <div className={`p-3 mx-3 my-3 rounded-2xl bg-slate-800/60 border border-slate-700/50 flex items-center ${isCollapsed ? 'justify-center' : 'gap-3'}`}>
         <img
           src={user?.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80'}
           alt={user?.name}
-          className="w-10 h-10 rounded-xl object-cover ring-2 ring-blue-500/30"
+          className="w-10 h-10 rounded-xl object-cover ring-2 ring-blue-500/30 shrink-0"
         />
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-1">
-            <span className="text-xs font-bold text-white truncate">{user?.name || 'Super Admin'}</span>
-            <ShieldCheck className="w-3.5 h-3.5 text-blue-400 shrink-0" />
+        {!isCollapsed && (
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-1">
+              <span className="text-xs font-bold text-white truncate">{user?.name || 'Super Admin'}</span>
+              <ShieldCheck className="w-3.5 h-3.5 text-blue-400 shrink-0" />
+            </div>
+            <span className="text-[10px] text-slate-400 truncate block">shuvendu.dhenki@gmail.com</span>
           </div>
-          <span className="text-[10px] text-slate-400 truncate block">shuvendu.dhenki@gmail.com</span>
-        </div>
+        )}
       </div>
 
       {/* Navigation List */}
@@ -96,21 +102,25 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({ currentPath, onNavig
             <button
               key={item.path}
               onClick={() => onNavigate(item.path)}
-              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all ${
+              title={isCollapsed ? item.label : undefined}
+              className={`w-full flex items-center ${isCollapsed ? 'justify-center' : 'justify-between'} px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all ${
                 isActive
                   ? 'bg-blue-600 text-white font-bold shadow-md shadow-blue-500/20'
                   : 'text-slate-400 hover:text-white hover:bg-slate-800/80'
               }`}
             >
               <div className="flex items-center gap-3">
-                <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-slate-400'}`} />
-                <span>{item.label}</span>
+                <Icon className={`w-5 h-5 shrink-0 ${isActive ? 'text-white' : 'text-slate-400'}`} />
+                {!isCollapsed && <span>{item.label}</span>}
               </div>
 
-              {item.badge !== undefined && item.badge > 0 && (
+              {!isCollapsed && item.badge !== undefined && item.badge > 0 && (
                 <span className={`text-[10px] font-extrabold text-white px-2 py-0.5 rounded-full ${item.badgeColor || 'bg-blue-500'}`}>
                   {item.badge}
                 </span>
+              )}
+              {isCollapsed && item.badge !== undefined && item.badge > 0 && (
+                <div className={`absolute right-4 w-2 h-2 rounded-full ${item.badgeColor || 'bg-blue-500'}`} />
               )}
             </button>
           );
@@ -120,11 +130,21 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({ currentPath, onNavig
       {/* Bottom Footer actions */}
       <div className="p-3 border-t border-slate-800 space-y-1">
         <button
-          onClick={() => onNavigate('/')}
-          className="w-full flex items-center gap-2.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition"
+          onClick={() => setIsCollapsed(!isCollapsed)}
+          className={`w-full flex items-center ${isCollapsed ? 'justify-center' : 'gap-2.5 px-3.5'} py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition`}
+          title={isCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
         >
-          <ArrowLeft className="w-4 h-4" />
-          <span>Exit to Marketplace</span>
+          <ArrowLeft className={`w-5 h-5 transition-transform ${isCollapsed ? 'rotate-180' : ''}`} />
+          {!isCollapsed && <span>Collapse Sidebar</span>}
+        </button>
+
+        <button
+          onClick={() => onNavigate('/')}
+          className={`w-full flex items-center ${isCollapsed ? 'justify-center' : 'gap-2.5 px-3.5'} py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition`}
+          title={isCollapsed ? "Exit to Marketplace" : undefined}
+        >
+          <LogOut className="w-5 h-5 rotate-180" />
+          {!isCollapsed && <span>Exit to Marketplace</span>}
         </button>
 
         <button
@@ -132,10 +152,11 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({ currentPath, onNavig
             logout();
             onNavigate('/');
           }}
-          className="w-full flex items-center gap-2.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 transition"
+          className={`w-full flex items-center ${isCollapsed ? 'justify-center' : 'gap-2.5 px-3.5'} py-2 rounded-xl text-xs font-semibold text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 transition`}
+          title={isCollapsed ? "Sign Out" : undefined}
         >
-          <LogOut className="w-4 h-4" />
-          <span>Sign Out</span>
+          <LogOut className="w-5 h-5" />
+          {!isCollapsed && <span>Sign Out</span>}
         </button>
       </div>
     </aside>

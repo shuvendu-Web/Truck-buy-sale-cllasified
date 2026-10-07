@@ -137,190 +137,9 @@ export const VehicleDetailsPage: React.FC<VehicleDetailsPageProps> = ({
         <span className="text-slate-800 font-bold truncate max-w-xs">{vehicle.brandName} {vehicle.model}</span>
       </nav>
 
-      {/* Main Grid: Left Gallery + Details, Right Sticky Seller Box */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-        
-        {/* Left 2 Columns */}
-        <div className="lg:col-span-2 space-y-8">
-          
-          {/* Gallery Component */}
-          <ImageGallery images={vehicle.images} title={vehicle.title} />
-
-          {/* Title, Price & Quick Actions Header Card */}
-          <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-xs space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
-              <div className="space-y-1">
-                <div className="flex items-center gap-2 flex-wrap">
-                  <span className="text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-2.5 py-0.5 rounded-lg">
-                    {vehicle.brandName} • {vehicle.category}
-                  </span>
-                  <StatusBadge status={vehicle.status} size="sm" />
-                  {vehicle.featured && (
-                    <span className="bg-amber-100 text-amber-800 text-[11px] font-bold px-2 py-0.5 rounded-md flex items-center gap-1">
-                      <Sparkles className="w-3 h-3 text-amber-600" />
-                      Featured
-                    </span>
-                  )}
-                </div>
-                <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-                  {vehicle.title}
-                </h1>
-                <div className="flex items-center gap-2 text-xs text-slate-500 pt-1">
-                  <MapPin className="w-3.5 h-3.5 text-blue-500" />
-                  <span>{vehicle.location.area}, {vehicle.location.city}, {vehicle.location.state}</span>
-                  <span>•</span>
-                  <span>Listed {new Date(vehicle.createdAt).toLocaleDateString()}</span>
-                </div>
-              </div>
-
-              {/* Price */}
-              <div className="sm:text-right">
-                <span className="text-3xl font-black text-blue-600 tracking-tight">
-                  {formattedPrice}
-                </span>
-                {vehicle.negotiable && (
-                  <span className="block text-xs text-slate-400 font-medium mt-0.5">Price Negotiable</span>
-                )}
-              </div>
-            </div>
-
-            {/* Quick action icons row */}
-            <div className="flex items-center justify-between pt-4 border-t border-slate-100 text-xs">
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => toggleFavorite(vehicle.id)}
-                  className={`px-3.5 py-2 rounded-xl border flex items-center gap-1.5 font-bold transition shadow-xs ${
-                    favorited
-                      ? 'bg-rose-50 border-rose-200 text-rose-600'
-                      : 'border-slate-200 text-slate-700 hover:bg-slate-50'
-                  }`}
-                >
-                  <Heart className={`w-4 h-4 ${favorited ? 'fill-rose-500' : ''}`} />
-                  <span>{favorited ? 'Saved' : 'Save'}</span>
-                </button>
-
-                <button
-                  onClick={handleShare}
-                  className="px-3.5 py-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold flex items-center gap-1.5 transition shadow-xs"
-                >
-                  <Share2 className="w-4 h-4 text-slate-500" />
-                  <span>Share</span>
-                </button>
-              </div>
-
-              <button
-                onClick={() => setReportModalOpen(true)}
-                className="text-slate-400 hover:text-rose-600 transition flex items-center gap-1 text-xs"
-              >
-                <Flag className="w-3.5 h-3.5" />
-                <span>Report Listing</span>
-              </button>
-            </div>
-          </div>
-
-          {/* Vehicle Specifications Grid */}
-          <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-xs space-y-6">
-            <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-              <span>Vehicle Specifications</span>
-            </h2>
-
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-              <div className="bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
-                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Make / Brand</span>
-                <span className="text-sm font-bold text-slate-900 mt-0.5 block">{vehicle.brandName}</span>
-              </div>
-              <div className="bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
-                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Model & Variant</span>
-                <span className="text-sm font-bold text-slate-900 mt-0.5 block truncate">{vehicle.model} {vehicle.variant}</span>
-              </div>
-              <div className="bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
-                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Year of Mfg</span>
-                <span className="text-sm font-bold text-slate-900 mt-0.5 block">{vehicle.year}</span>
-              </div>
-              <div className="bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
-                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Fuel Type</span>
-                <span className="text-sm font-bold text-slate-900 mt-0.5 block">{vehicle.fuelType}</span>
-              </div>
-              <div className="bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
-                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Transmission</span>
-                <span className="text-sm font-bold text-slate-900 mt-0.5 block">{vehicle.transmission}</span>
-              </div>
-              <div className="bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
-                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Kilometers Driven</span>
-                <span className="text-sm font-bold text-slate-900 mt-0.5 block">{formattedKm} km</span>
-              </div>
-              <div className="bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
-                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Ownership</span>
-                <span className="text-sm font-bold text-slate-900 mt-0.5 block">{vehicle.ownership}</span>
-              </div>
-              <div className="bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
-                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Exterior Color</span>
-                <span className="text-sm font-bold text-slate-900 mt-0.5 block">{vehicle.color}</span>
-              </div>
-              <div className="bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
-                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Engine Spec</span>
-                <span className="text-sm font-bold text-slate-900 mt-0.5 block truncate">{vehicle.engine || 'Standard'}</span>
-              </div>
-              <div className="bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
-                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Vehicle Condition</span>
-                <span className="text-sm font-bold text-emerald-700 mt-0.5 block">{vehicle.condition}</span>
-              </div>
-              <div className="bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
-                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Insurance Status</span>
-                <span className="text-sm font-bold text-slate-900 mt-0.5 block truncate">{vehicle.insurance}</span>
-              </div>
-              <div className="bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
-                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Registration Number</span>
-                <span className="text-sm font-bold text-slate-900 mt-0.5 block">{vehicle.registrationNumber}</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Description Card */}
-          <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-xs space-y-4">
-            <h2 className="text-lg font-bold text-slate-900">Seller's Description</h2>
-            <p className="text-sm text-slate-600 leading-relaxed whitespace-pre-line">
-              {vehicle.description}
-            </p>
-          </div>
-
-          {/* Location Map Preview */}
-          <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-xs space-y-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="text-lg font-bold text-slate-900">Vehicle Location</h2>
-                <p className="text-xs text-slate-500">{vehicle.location.area}, {vehicle.location.city}, {vehicle.location.state} - {vehicle.location.pincode}</p>
-              </div>
-              <span className="text-xs font-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
-                Verified Area
-              </span>
-            </div>
-
-            {/* Stylized Interactive Map Container */}
-            <div className="relative h-60 rounded-2xl overflow-hidden bg-slate-100 border border-slate-200 flex items-center justify-center">
-              <img
-                src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=1000&q=80"
-                alt="Map representation"
-                className="w-full h-full object-cover opacity-80"
-              />
-              <div className="absolute inset-0 bg-blue-900/20 backdrop-blur-[1px]" />
-              <div className="relative z-10 bg-white/95 backdrop-blur-md p-3.5 rounded-2xl shadow-xl border border-slate-100 flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center">
-                  <MapPin className="w-5 h-5" />
-                </div>
-                <div>
-                  <h4 className="text-xs font-bold text-slate-900">{vehicle.title}</h4>
-                  <span className="text-[11px] text-slate-500">{vehicle.location.city}, {vehicle.location.state}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Right Sticky Column: Seller Contact & Express Interest */}
-        <div className="space-y-6 sticky top-24">
-          
-          {/* Seller Profile Card */}
+      {/* Seller Card Extracted for Responsive Positioning */}
+      {(() => {
+        const sellerCard = (
           <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-lg space-y-5">
             <div className="flex items-center justify-between pb-4 border-b border-slate-100">
               <span className="text-xs font-bold uppercase tracking-wider text-slate-400">Listed By</span>
@@ -446,8 +265,200 @@ export const VehicleDetailsPage: React.FC<VehicleDetailsPageProps> = ({
               </p>
             </div>
           </div>
+        );
+
+        return (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+            
+            {/* Left 2 Columns */}
+            <div className="lg:col-span-2 space-y-8">
+          
+          {/* Gallery Component */}
+          <ImageGallery images={vehicle.images} title={vehicle.title} />
+
+          {/* Title, Price & Quick Actions Header Card */}
+          <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-xs space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-2.5 py-0.5 rounded-lg">
+                    {vehicle.brandName} • {vehicle.category}
+                  </span>
+                  <StatusBadge status={vehicle.status} size="sm" />
+                  {vehicle.featured && (
+                    <span className="bg-amber-100 text-amber-800 text-[11px] font-bold px-2 py-0.5 rounded-md flex items-center gap-1">
+                      <Sparkles className="w-3 h-3 text-amber-600" />
+                      Featured
+                    </span>
+                  )}
+                </div>
+                <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+                  {vehicle.title}
+                </h1>
+                <div className="flex items-center gap-2 text-xs text-slate-500 pt-1">
+                  <MapPin className="w-3.5 h-3.5 text-blue-500" />
+                  <span>{vehicle.location.area}, {vehicle.location.city}, {vehicle.location.state}</span>
+                  <span>•</span>
+                  <span>Listed {new Date(vehicle.createdAt).toLocaleDateString()}</span>
+                </div>
+              </div>
+
+              {/* Price */}
+              <div className="sm:text-right">
+                <span className="text-3xl font-black text-blue-600 tracking-tight">
+                  {formattedPrice}
+                </span>
+                {vehicle.negotiable && (
+                  <span className="block text-xs text-slate-400 font-medium mt-0.5">Price Negotiable</span>
+                )}
+              </div>
+            </div>
+
+            {/* Quick action icons row */}
+            <div className="flex items-center justify-between pt-4 border-t border-slate-100 text-xs">
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => toggleFavorite(vehicle.id)}
+                  className={`px-3.5 py-2 rounded-xl border flex items-center gap-1.5 font-bold transition shadow-xs ${
+                    favorited
+                      ? 'bg-rose-50 border-rose-200 text-rose-600'
+                      : 'border-slate-200 text-slate-700 hover:bg-slate-50'
+                  }`}
+                >
+                  <Heart className={`w-4 h-4 ${favorited ? 'fill-rose-500' : ''}`} />
+                  <span>{favorited ? 'Saved' : 'Save'}</span>
+                </button>
+
+                <button
+                  onClick={handleShare}
+                  className="px-3.5 py-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold flex items-center gap-1.5 transition shadow-xs"
+                >
+                  <Share2 className="w-4 h-4 text-slate-500" />
+                  <span>Share</span>
+                </button>
+              </div>
+
+              <button
+                onClick={() => setReportModalOpen(true)}
+                className="text-slate-400 hover:text-rose-600 transition flex items-center gap-1 text-xs"
+              >
+                <Flag className="w-3.5 h-3.5" />
+                <span>Report Listing</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Mobile-only Seller Card (Visible only on small screens) */}
+          <div className="block lg:hidden">
+            {sellerCard}
+          </div>
+
+          {/* Vehicle Specifications Grid */}
+          <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-xs space-y-6">
+            <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+              <span>Vehicle Specifications</span>
+            </h2>
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+              <div className="bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
+                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Make / Brand</span>
+                <span className="text-sm font-bold text-slate-900 mt-0.5 block">{vehicle.brandName}</span>
+              </div>
+              <div className="bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
+                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Model & Variant</span>
+                <span className="text-sm font-bold text-slate-900 mt-0.5 block truncate">{vehicle.model} {vehicle.variant}</span>
+              </div>
+              <div className="bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
+                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Year of Mfg</span>
+                <span className="text-sm font-bold text-slate-900 mt-0.5 block">{vehicle.year}</span>
+              </div>
+              <div className="bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
+                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Fuel Type</span>
+                <span className="text-sm font-bold text-slate-900 mt-0.5 block">{vehicle.fuelType}</span>
+              </div>
+              <div className="bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
+                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Transmission</span>
+                <span className="text-sm font-bold text-slate-900 mt-0.5 block">{vehicle.transmission}</span>
+              </div>
+              <div className="bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
+                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Kilometers Driven</span>
+                <span className="text-sm font-bold text-slate-900 mt-0.5 block">{formattedKm} km</span>
+              </div>
+              <div className="bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
+                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Ownership</span>
+                <span className="text-sm font-bold text-slate-900 mt-0.5 block">{vehicle.ownership}</span>
+              </div>
+              <div className="bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
+                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Exterior Color</span>
+                <span className="text-sm font-bold text-slate-900 mt-0.5 block">{vehicle.color}</span>
+              </div>
+              <div className="bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
+                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Engine Spec</span>
+                <span className="text-sm font-bold text-slate-900 mt-0.5 block truncate">{vehicle.engine || 'Standard'}</span>
+              </div>
+              <div className="bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
+                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Vehicle Condition</span>
+                <span className="text-sm font-bold text-emerald-700 mt-0.5 block">{vehicle.condition}</span>
+              </div>
+              <div className="bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
+                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Insurance Status</span>
+                <span className="text-sm font-bold text-slate-900 mt-0.5 block truncate">{vehicle.insurance}</span>
+              </div>
+              <div className="bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
+                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Registration Number</span>
+                <span className="text-sm font-bold text-slate-900 mt-0.5 block">{vehicle.registrationNumber}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Description Card */}
+          <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-xs space-y-4">
+            <h2 className="text-lg font-bold text-slate-900">Seller's Description</h2>
+            <p className="text-sm text-slate-600 leading-relaxed whitespace-pre-line">
+              {vehicle.description}
+            </p>
+          </div>
+
+          {/* Location Map Preview */}
+          <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-xs space-y-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-lg font-bold text-slate-900">Vehicle Location</h2>
+                <p className="text-xs text-slate-500">{vehicle.location.area}, {vehicle.location.city}, {vehicle.location.state} - {vehicle.location.pincode}</p>
+              </div>
+              <span className="text-xs font-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
+                Verified Area
+              </span>
+            </div>
+
+            {/* Stylized Interactive Map Container */}
+            <div className="relative h-60 rounded-2xl overflow-hidden bg-slate-100 border border-slate-200 flex items-center justify-center">
+              <img
+                src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=1000&q=80"
+                alt="Map representation"
+                className="w-full h-full object-cover opacity-80"
+              />
+              <div className="absolute inset-0 bg-blue-900/20 backdrop-blur-[1px]" />
+              <div className="relative z-10 bg-white/95 backdrop-blur-md p-3.5 rounded-2xl shadow-xl border border-slate-100 flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center">
+                  <MapPin className="w-5 h-5" />
+                </div>
+                <div>
+                  <h4 className="text-xs font-bold text-slate-900">{vehicle.title}</h4>
+                  <span className="text-[11px] text-slate-500">{vehicle.location.city}, {vehicle.location.state}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Sticky Column: Seller Contact & Express Interest (Visible only on desktop) */}
+        <div className="hidden lg:block space-y-6 sticky top-24">
+          {sellerCard}
         </div>
       </div>
+      );
+      })()}
 
       {/* Related Vehicles Section */}
       {relatedVehicles.length > 0 && (

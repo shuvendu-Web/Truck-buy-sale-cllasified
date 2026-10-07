@@ -100,7 +100,7 @@ const DEFAULT_FILTERS: MarketplaceFilter = {
   model: 'All',
   location: 'All',
   minPrice: null,
-  maxPrice: null,
+  maxPrice: 4000000,
   minYear: null,
   maxYear: null,
   fuelType: 'All',
@@ -818,15 +818,13 @@ export const MarketplaceProvider: React.FC<{ children: ReactNode }> = ({ childre
   const updateTestimonialStatus = (id: string, status: 'pending' | 'approved' | 'rejected') => {
     const newTestimonials = testimonials.map(t => t.id === id ? { ...t, status } : t);
     setTestimonials(newTestimonials);
-    StorageService.saveTestimonials(newTestimonials);
-    logAdminAction(`Updated testimonial status to ${status}`, 'Testimonial', id, id);
+    StorageService.saveTestimonials(newTestimonials as any);
   };
 
   const deleteTestimonial = (id: string) => {
     const newTestimonials = testimonials.filter(t => t.id !== id);
     setTestimonials(newTestimonials);
-    StorageService.saveTestimonials(newTestimonials);
-    logAdminAction('Deleted testimonial', 'Testimonial', id, id);
+    StorageService.saveTestimonials(newTestimonials as any);
   };
 
   return (

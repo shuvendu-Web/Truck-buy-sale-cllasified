@@ -20,6 +20,13 @@ export const QuickFilterBar: React.FC<QuickFilterBarProps> = ({ onSearchSubmit, 
   ];
   const [activeTab, setActiveTab] = useState<string>(filters.category || 'All');
 
+  const formatPrice = (value: number | null | undefined) => {
+    if (!value) return 'Any Price';
+    if (value >= 10000000) return `₹${(value / 10000000).toFixed(2).replace('.00', '')} Cr`;
+    if (value >= 100000) return `₹${(value / 100000).toFixed(2).replace('.00', '')} Lakh`;
+    return `₹${value.toLocaleString()}`;
+  };
+
   const handleTabChange = (val: string) => {
     setActiveTab(val);
     setFilters(prev => ({ ...prev, category: val }));
@@ -102,19 +109,32 @@ export const QuickFilterBar: React.FC<QuickFilterBarProps> = ({ onSearchSubmit, 
 
           {/* Max Budget */}
           <div>
-            <label className="block text-[11px] font-bold text-white/70 uppercase tracking-wider mb-1">Max Budget</label>
-            <select
-              value={filters.maxPrice || ''}
-              onChange={(e) => setFilters(prev => ({ ...prev, maxPrice: e.target.value ? Number(e.target.value) : null }))}
-              className="w-full px-3.5 py-2.5 rounded-xl border border-white/20 bg-white/5 hover:bg-white/10 text-white text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-green-500/30 focus:border-green-400 transition"
-            >
-              <option className="text-slate-900 bg-white" value="">Any Price</option>
-              <option className="text-slate-900 bg-white" value="200000">Under ₹2 Lakh</option>
-              <option className="text-slate-900 bg-white" value="500000">Under ₹5 Lakh</option>
-              <option className="text-slate-900 bg-white" value="1000000">Under ₹10 Lakh</option>
-              <option className="text-slate-900 bg-white" value="1500000">Under ₹15 Lakh</option>
-              <option className="text-slate-900 bg-white" value="2500000">Under ₹25 Lakh</option>
-            </select>
+            <div className="flex justify-between items-center mb-1">
+              <label className="block text-[11px] font-bold text-white/70 uppercase tracking-wider">Budget Range</label>
+              <span className="text-[11px] font-bold text-green-400">
+                {formatPrice(filters.maxPrice)}
+              </span>
+            </div>
+            <div className="px-1 pt-2 pb-1 flex flex-col">
+              <input
+                type="range"
+                min="100000"
+                max="10000000"
+                step="100000"
+                value={filters.maxPrice || 10000000}
+                onChange={(e) => {
+                  const val = Number(e.target.value);
+                  setFilters(prev => ({ ...prev, maxPrice: val === 10000000 ? null : val }));
+                }}
+                className="w-full accent-green-500 h-1.5 rounded-lg appearance-none cursor-pointer relative z-10"
+                style={{
+                  background: `linear-gradient(to right, #3b82f6 ${(((filters.maxPrice || 10000000) - 100000) / (10000000 - 100000)) * 100}%, rgba(255,255,255,0.2) ${(((filters.maxPrice || 10000000) - 100000) / (10000000 - 100000)) * 100}%)`
+                }}
+              />
+              <div className="flex justify-between items-center mt-2">
+                <span className="text-[10px] font-bold text-green-400 tracking-wider">1 LAKH</span>
+              </div>
+            </div>
           </div>
         </div>
 

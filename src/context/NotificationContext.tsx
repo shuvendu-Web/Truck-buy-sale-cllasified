@@ -19,6 +19,7 @@ interface NotificationContextType {
   markAsRead: (id: string) => void;
   markAllAsRead: () => void;
   deleteNotification: (id: string) => void;
+  deleteAllNotifications: () => void;
   addNotification: (notif: Omit<AppNotification, 'id' | 'createdAt' | 'read'>) => void;
 }
 
@@ -74,6 +75,11 @@ export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ childr
     StorageService.deleteNotification(id);
   };
 
+  const deleteAllNotifications = () => {
+    setNotifications([]);
+    StorageService.saveNotifications([]);
+  };
+
   const unreadCount = notifications.filter(n => !n.read).length;
 
   return (
@@ -87,6 +93,7 @@ export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ childr
         markAsRead,
         markAllAsRead,
         deleteNotification,
+        deleteAllNotifications,
         addNotification,
       }}
     >

@@ -17,7 +17,9 @@ import {
   Menu, 
   X,
   Sparkles,
-  Inbox
+  Inbox,
+  Phone,
+  Mail
 } from 'lucide-react';
 import { AuthModal } from '../ui/AuthModal';
 
@@ -29,7 +31,7 @@ interface HeaderProps {
 export const Header: React.FC<HeaderProps> = ({ currentPath, onNavigate }) => {
   const { user, isAuthenticated, isSuperAdmin, isSeller, logout } = useAuth();
   const { favorites, pendingApprovalsCount } = useMarketplace();
-  const { notifications, unreadCount, markAsRead, markAllAsRead } = useNotification();
+  const { notifications, unreadCount, markAsRead, markAllAsRead, deleteNotification, deleteAllNotifications } = useNotification();
 
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authModalMode, setAuthModalMode] = useState<'login' | 'register'>('login');
@@ -57,6 +59,134 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, onNavigate }) => {
 
   return (
     <>
+      {/* Top Utility Nav */}
+      <div className="bg-slate-900 text-white text-xs relative z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-10 flex items-center justify-between">
+          
+          {/* Left Section: Contact Info (Hidden on Mobile) */}
+          <div className="hidden md:flex items-center gap-6">
+            <a href="tel:+9103340228800" className="flex items-center gap-1.5 text-slate-300 hover:text-white transition">
+              <Phone className="w-3.5 h-3.5" />
+              <span className="font-medium tracking-wide">+91 (033) 4022-8800</span>
+            </a>
+            <a href="mailto:support@satyadeal.com" className="flex items-center gap-1.5 text-slate-300 hover:text-white transition">
+              <Mail className="w-3.5 h-3.5" />
+              <span className="font-medium tracking-wide">support@satyadeal.com</span>
+            </a>
+          </div>
+
+          {/* Right Section: Actions */}
+          <div className="flex items-center justify-end gap-4 sm:gap-6 w-full md:w-auto">
+          
+          {/* Saved Vehicles */}
+          <button
+            onClick={() => onNavigate(isAuthenticated ? '/dashboard/favorites' : '/vehicles')}
+            className="relative flex items-center gap-1.5 text-slate-300 hover:text-white transition"
+          >
+            <Heart className="w-3.5 h-3.5" />
+            <span className="font-semibold tracking-wide">Saved Vehicles</span>
+            {favorites.length > 0 && (
+              <span className="absolute -top-1.5 -right-2.5 w-3.5 h-3.5 bg-rose-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center">
+                {favorites.length}
+              </span>
+            )}
+          </button>
+
+          {/* Notifications */}
+          <div className="relative">
+            <button
+              onClick={() => setNotifDropdownOpen(!notifDropdownOpen)}
+              className="relative flex items-center gap-1.5 text-slate-300 hover:text-white transition"
+            >
+              <Bell className="w-3.5 h-3.5" />
+              <span className="font-semibold tracking-wide">Notifications</span>
+              {unreadCount > 0 && (
+                <span className="absolute -top-1.5 -right-2.5 w-3.5 h-3.5 bg-blue-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center animate-pulse">
+                  {unreadCount}
+                </span>
+              )}
+            </button>
+
+            {/* Notification Popover */}
+            {notifDropdownOpen && (
+              <div className="absolute right-0 mt-3 w-80 sm:w-96 bg-white rounded-2xl shadow-2xl border border-slate-100 py-3 z-50 animate-fade-in text-slate-800">
+                <div className="px-4 pb-2.5 border-b border-slate-100 flex items-center justify-between">
+                  <div className="flex items-center gap-1.5 font-bold text-sm text-slate-900">
+                    <Bell className="w-4 h-4 text-blue-600" />
+                    <span>Notifications</span>
+                    {unreadCount > 0 && (
+                      <span className="bg-blue-100 text-blue-700 text-[10px] px-2 py-0.5 rounded-full">
+                        {unreadCount} new
+                      </span>
+                    )}
+                  </div>
+                  {notifications.length > 0 && (
+                    <button
+                      onClick={deleteAllNotifications}
+                      className="text-[11px] font-semibold text-rose-600 hover:underline"
+                    >
+                      Clear all
+                    </button>
+                  )}
+                </div>
+
+                <div className="max-h-72 overflow-y-auto divide-y divide-slate-50">
+                  {notifications.length === 0 ? (
+                    <div className="py-8 text-center text-xs text-slate-400">
+                      No notifications yet
+                    </div>
+                  ) : (
+                    notifications.slice(0, 6).map((notif) => (
+                      <div
+                        key={notif.id}
+                        onClick={() => {
+                          markAsRead(notif.id);
+                          if (notif.link) {
+                            onNavigate(notif.link);
+                            setNotifDropdownOpen(false);
+                          }
+                        }}
+                        className={`p-3.5 hover:bg-slate-50 transition cursor-pointer flex gap-3 ${
+                          !notif.read ? 'bg-blue-50/40' : ''
+                        }`}
+                      >
+                        <div className="w-2 h-2 rounded-full bg-blue-600 mt-1.5 shrink-0" />
+                        <div className="flex-1 pr-2">
+                          <h5 className="text-xs font-bold text-slate-800">{notif.title}</h5>
+                          <p className="text-[11px] text-slate-500 mt-0.5 leading-relaxed">{notif.message}</p>
+                          <span className="text-[10px] text-slate-400 mt-1 block">
+                            {new Date(notif.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                          </span>
+                        </div>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            deleteNotification(notif.id);
+                          }}
+                          className="text-slate-300 hover:text-rose-500 transition-colors p-1"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Sell Vehicle */}
+          <button
+            onClick={handleSellClick}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold transition cursor-pointer shadow-md"
+          >
+            <PlusCircle className="w-3.5 h-3.5" />
+            <span>Sell Vehicle</span>
+          </button>
+          </div>
+        </div>
+      </div>
+
       <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200/80 shadow-xs transition-all">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
           
@@ -110,93 +240,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, onNavigate }) => {
               <Search className="w-5 h-5" />
             </button>
 
-            {/* Saved Vehicles Heart Badge */}
-            <button
-              onClick={() => onNavigate(isAuthenticated ? '/dashboard/favorites' : '/vehicles')}
-              className="relative p-2.5 rounded-xl text-slate-500 hover:text-rose-600 hover:bg-rose-50/50 transition"
-              title="Saved Vehicles"
-            >
-              <Heart className="w-5 h-5" />
-              {favorites.length > 0 && (
-                <span className="absolute top-1.5 right-1.5 w-4 h-4 bg-rose-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-xs">
-                  {favorites.length}
-                </span>
-              )}
-            </button>
 
-            {/* Notification Bell with Dropdown */}
-            <div className="relative">
-              <button
-                onClick={() => setNotifDropdownOpen(!notifDropdownOpen)}
-                className="relative p-2.5 rounded-xl text-slate-500 hover:text-blue-600 hover:bg-slate-100 transition"
-                title="Notifications"
-              >
-                <Bell className="w-5 h-5" />
-                {unreadCount > 0 && (
-                  <span className="absolute top-1.5 right-1.5 w-4 h-4 bg-blue-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center animate-pulse">
-                    {unreadCount}
-                  </span>
-                )}
-              </button>
-
-              {/* Notification Popover */}
-              {notifDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-2xl shadow-2xl border border-slate-100 py-3 z-50 animate-fade-in">
-                  <div className="px-4 pb-2.5 border-b border-slate-100 flex items-center justify-between">
-                    <div className="flex items-center gap-1.5 font-bold text-sm text-slate-900">
-                      <Bell className="w-4 h-4 text-blue-600" />
-                      <span>Notifications</span>
-                      {unreadCount > 0 && (
-                        <span className="bg-blue-100 text-blue-700 text-[10px] px-2 py-0.5 rounded-full">
-                          {unreadCount} new
-                        </span>
-                      )}
-                    </div>
-                    {unreadCount > 0 && (
-                      <button
-                        onClick={markAllAsRead}
-                        className="text-[11px] font-semibold text-blue-600 hover:underline"
-                      >
-                        Mark all as read
-                      </button>
-                    )}
-                  </div>
-
-                  <div className="max-h-72 overflow-y-auto divide-y divide-slate-50">
-                    {notifications.length === 0 ? (
-                      <div className="py-8 text-center text-xs text-slate-400">
-                        No notifications yet
-                      </div>
-                    ) : (
-                      notifications.slice(0, 6).map((notif) => (
-                        <div
-                          key={notif.id}
-                          onClick={() => {
-                            markAsRead(notif.id);
-                            if (notif.link) {
-                              onNavigate(notif.link);
-                              setNotifDropdownOpen(false);
-                            }
-                          }}
-                          className={`p-3.5 hover:bg-slate-50 transition cursor-pointer flex gap-3 ${
-                            !notif.read ? 'bg-blue-50/40' : ''
-                          }`}
-                        >
-                          <div className="w-2 h-2 rounded-full bg-blue-600 mt-1.5 shrink-0" />
-                          <div className="flex-1">
-                            <h5 className="text-xs font-bold text-slate-800">{notif.title}</h5>
-                            <p className="text-[11px] text-slate-500 mt-0.5 leading-relaxed">{notif.message}</p>
-                            <span className="text-[10px] text-slate-400 mt-1 block">
-                              {new Date(notif.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                            </span>
-                          </div>
-                        </div>
-                      ))
-                    )}
-                  </div>
-                </div>
-              )}
-            </div>
 
             {/* Super Admin Switcher Pill (if Super Admin) */}
             {isSuperAdmin && (
@@ -214,14 +258,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, onNavigate }) => {
               </button>
             )}
 
-            {/* Sell Vehicle Primary CTA (30% Green Accent Action) */}
-            <button
-              onClick={handleSellClick}
-              className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-bold shadow-md shadow-emerald-600/20 hover:shadow-lg transition transform hover:-translate-y-0.5 cursor-pointer"
-            >
-              <PlusCircle className="w-4 h-4" />
-              <span>Sell Vehicle</span>
-            </button>
+
 
             {/* User Profile / Login Button */}
             {isAuthenticated ? (
