@@ -5,7 +5,7 @@ import { StatusBadge } from '../../components/ui/StatusBadge';
 import { AdminRejectModal } from '../../components/ui/AdminRejectModal';
 import { Vehicle } from '../../types';
 import { 
-  Car, 
+  Truck, 
   Search, 
   Filter, 
   Sparkles, 

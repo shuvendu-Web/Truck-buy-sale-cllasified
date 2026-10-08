@@ -5,7 +5,7 @@ import { useNotification } from '../../context/NotificationContext';
 import { StatusBadge } from '../../components/ui/StatusBadge';
 import { Vehicle } from '../../types';
 import { 
-  Car, 
+  Truck, 
   Plus, 
   Edit3, 
   Trash2, 
@@ -91,7 +91,7 @@ export const MyListingsPage: React.FC<MyListingsPageProps> = ({
       {filteredVehicles.length === 0 ? (
         <div className="bg-white rounded-3xl p-12 text-center border border-slate-200/80 shadow-xs space-y-4">
           <div className="w-16 h-16 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center mx-auto">
-            <Car className="w-8 h-8" />
+            <Truck className="w-8 h-8" />
           </div>
           <h3 className="text-base font-bold text-slate-900">No Vehicles in this View</h3>
           <p className="text-xs text-slate-500 max-w-sm mx-auto">

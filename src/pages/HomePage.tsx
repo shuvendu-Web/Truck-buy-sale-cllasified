@@ -5,8 +5,9 @@ import { VehicleCard } from '../components/ui/VehicleCard';
 import { QuickFilterBar } from '../components/ui/QuickFilterBar';
 import AuroraText from '../components/ui/AuroraText';
 import { TestimonialSection } from '../components/ui/TestimonialSection';
+import { BrandLogo } from '../components/ui/BrandLogo';
 import { 
-  Car, 
+  Truck, 
   ShieldCheck, 
   UserCheck, 
   PhoneCall, 
@@ -71,7 +72,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onSelectVehicle 
             <AuroraText className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight sm:leading-none mb-4" />
 
             <p className="text-base sm:text-lg text-slate-200 font-medium max-w-2xl mx-auto leading-relaxed drop-shadow-sm">
-              Find the best deals on verified cars, bikes, trucks and SUVs. Safe, simple, and direct owner connections with 0% middleman commission.
+              Find the best deals on verified dump trucks, tractor trailers, trucks and Flatbed Trucks. Safe, simple, and direct owner connections with 0% middleman commission.
             </p>
           </div>
 
@@ -118,7 +119,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onSelectVehicle 
               </div>
               <div>
                 <h4 className="text-xs font-bold text-slate-900">Wide Selection</h4>
-                <p className="text-[11px] text-slate-500">Cars, bikes & trucks</p>
+                <p className="text-[11px] text-slate-500">Dump Trucks, tractor trailers & trucks</p>
               </div>
             </div>
           </div>
@@ -181,7 +182,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onSelectVehicle 
               className="group bg-white rounded-2xl p-5 border border-slate-200/80 hover:border-blue-300 shadow-xs hover:shadow-lg transition-all duration-300 flex flex-col items-center text-center cursor-pointer"
             >
               <div className="w-16 h-16 rounded-2xl bg-blue-50/80 group-hover:bg-blue-600 group-hover:text-white text-blue-600 flex items-center justify-center transition-all duration-300 mb-3 shadow-xs">
-                <Car className="w-8 h-8" />
+                <Truck className="w-8 h-8" />
               </div>
               <h3 className="text-sm font-bold text-slate-900 group-hover:text-blue-600 transition">
                 {cat.name}s
@@ -266,10 +267,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onSelectVehicle 
               onClick={() => handleBrandClick(brand.name)}
               className="bg-white rounded-2xl p-4 border border-slate-200/80 hover:border-blue-300 hover:shadow-md transition text-center cursor-pointer flex flex-col items-center justify-center space-y-2 group"
             >
-              <img
+              <BrandLogo
                 src={brand.logo}
-                alt={brand.name}
-                className="h-10 max-w-[100px] object-contain group-hover:scale-105 transition"
+                name={brand.name}
+                className="h-10 w-10 max-w-[100px] object-contain group-hover:scale-105 transition"
               />
               <span className="text-xs font-bold text-slate-800 group-hover:text-blue-600 transition">
                 {brand.name}

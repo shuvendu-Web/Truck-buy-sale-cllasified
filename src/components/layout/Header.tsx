@@ -3,7 +3,7 @@ import { useAuth } from '../../context/AuthContext';
 import { useMarketplace } from '../../context/MarketplaceContext';
 import { useNotification } from '../../context/NotificationContext';
 import { 
-  Car, 
+  Truck, 
   PlusCircle, 
   Search, 
   Bell, 
@@ -196,7 +196,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, onNavigate }) => {
             className="flex items-center gap-2.5 cursor-pointer select-none group"
           >
             <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white shadow-md shadow-blue-500/20 group-hover:scale-105 transition">
-              <Car className="w-6 h-6" />
+              <Truck className="w-6 h-6" />
             </div>
             <div>
               <span className="text-2xl font-extrabold tracking-tight text-slate-900 flex items-center">
@@ -321,7 +321,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, onNavigate }) => {
                         }}
                         className="w-full px-4 py-2 text-left text-xs font-semibold text-slate-700 hover:bg-slate-50 flex items-center gap-2.5"
                       >
-                        <Car className="w-4 h-4 text-slate-400" />
+                        <Truck className="w-4 h-4 text-slate-400" />
                         <span>My Listings</span>
                       </button>
                       <button

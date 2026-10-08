@@ -40,7 +40,7 @@ export const AddVehiclePage: React.FC<AddVehiclePageProps> = ({
   const [submitting, setSubmitting] = useState(false);
 
   // Form states
-  const [category, setCategory] = useState<VehicleCategoryType>('Car');
+  const [category, setCategory] = useState<VehicleCategoryType>('Dump Truck');
   const [brandName, setBrandName] = useState('Maruti Suzuki');
   const [model, setModel] = useState('');
   const [variant, setVariant] = useState('');
@@ -268,7 +268,7 @@ export const AddVehiclePage: React.FC<AddVehiclePageProps> = ({
 
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
               {categories.map((catObj) => {
-                const IconComp = (Icons as any)[catObj.icon] || Icons.Car;
+                const IconComp = (Icons as any)[catObj.icon] || Icons.Truck;
                 return (
                   <button
                     key={catObj.id}

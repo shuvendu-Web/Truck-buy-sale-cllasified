@@ -1,6 +1,6 @@
 import React from 'react';
 import { useMarketplace } from '../../context/MarketplaceContext';
-import { MessageSquare, Car, User, Clock, ShieldCheck } from 'lucide-react';
+import { MessageSquare, Truck, User, Clock, ShieldCheck } from 'lucide-react';
 
 export const AdminMessagesPage: React.FC = () => {
   const { conversations, messages } = useMarketplace();

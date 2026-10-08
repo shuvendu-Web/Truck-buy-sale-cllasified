@@ -11,7 +11,7 @@ import {
   RotateCcw, 
   ChevronDown, 
   Fuel, 
-  Car, 
+  Truck, 
   MapPin, 
   Tag,
   Gauge
@@ -308,7 +308,7 @@ export const BrowseVehiclesPage: React.FC<BrowseVehiclesPageProps> = ({
           {filteredVehicles.length === 0 ? (
             <div className="bg-white rounded-3xl p-12 text-center border border-slate-200/80 shadow-xs space-y-4">
               <div className="w-16 h-16 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center mx-auto">
-                <Car className="w-8 h-8" />
+                <Truck className="w-8 h-8" />
               </div>
               <h3 className="text-lg font-bold text-slate-900">No Vehicles Found</h3>
               <p className="text-xs text-slate-500 max-w-md mx-auto leading-relaxed">

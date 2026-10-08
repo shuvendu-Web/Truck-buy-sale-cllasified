@@ -2,7 +2,7 @@ import React from 'react';
 import { useMarketplace } from '../../context/MarketplaceContext';
 import { VehicleCard } from '../../components/ui/VehicleCard';
 import { Vehicle } from '../../types';
-import { Heart, Car } from 'lucide-react';
+import { Heart, Truck } from 'lucide-react';
 
 interface SellerFavoritesPageProps {
   onSelectVehicle: (vehicle: Vehicle) => void;

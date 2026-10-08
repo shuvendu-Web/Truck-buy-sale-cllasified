@@ -2,7 +2,7 @@ import React from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useMarketplace } from '../../context/MarketplaceContext';
 import { 
-  Car, 
+  Truck, 
   CheckCircle2, 
   Clock, 
   XCircle, 
@@ -63,7 +63,7 @@ export const SellerDashboardPage: React.FC<SellerDashboardPageProps> = ({ onNavi
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
         <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs">
           <div className="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-2">
-            <Car className="w-4 h-4" />
+            <Truck className="w-4 h-4" />
           </div>
           <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Total Listings</span>
           <span className="text-2xl font-black text-slate-900 mt-0.5 block">{userVehicles.length}</span>
@@ -185,7 +185,7 @@ export const SellerDashboardPage: React.FC<SellerDashboardPageProps> = ({ onNavi
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-base font-bold text-slate-900">Recent Buyer Leads</h2>
-              <p className="text-xs text-slate-500">Inquiries submitted on your cars</p>
+              <p className="text-xs text-slate-500">Inquiries submitted on your dump trucks</p>
             </div>
             <button
               onClick={() => onNavigate('/dashboard/interests')}

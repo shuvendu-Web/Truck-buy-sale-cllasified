@@ -7,6 +7,7 @@ import { Footer } from './components/layout/Footer';
 import { SellerSidebar } from './components/layout/SellerSidebar';
 import { AdminSidebar } from './components/layout/AdminSidebar';
 import { AdminHeader } from './components/layout/AdminHeader';
+import { FloatingButtons } from './components/ui/FloatingButtons';
 
 // Public Pages
 import { HomePage } from './pages/HomePage';
@@ -221,6 +222,7 @@ const MainApp: React.FC = () => {
           </main>
 
           <Footer onNavigate={navigate} />
+          <FloatingButtons />
         </>
       )}
     </div>

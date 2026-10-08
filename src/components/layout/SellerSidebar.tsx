@@ -3,7 +3,7 @@ import { useAuth } from '../../context/AuthContext';
 import { useMarketplace } from '../../context/MarketplaceContext';
 import { 
   LayoutDashboard, 
-  Car, 
+  Truck, 
   PlusCircle, 
   Inbox, 
   MessageSquare, 
@@ -30,7 +30,7 @@ export const SellerSidebar: React.FC<SellerSidebarProps> = ({ currentPath, onNav
 
   const links = [
     { label: 'Overview', path: '/dashboard', icon: LayoutDashboard },
-    { label: 'My Listings', path: '/dashboard/listings', icon: Car, badge: userVehicles.length },
+    { label: 'My Listings', path: '/dashboard/listings', icon: Truck, badge: userVehicles.length },
     { label: 'Add New Vehicle', path: '/dashboard/listings/new', icon: PlusCircle, highlight: true },
     { label: 'Interested Buyers', path: '/dashboard/interests', icon: Inbox, badge: newInterestsCount, badgeColor: 'bg-emerald-500' },
     { label: 'Messages', path: '/dashboard/messages', icon: MessageSquare },

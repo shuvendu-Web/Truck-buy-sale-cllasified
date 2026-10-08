@@ -1,6 +1,7 @@
 import React from 'react';
 import { useMarketplace } from '../context/MarketplaceContext';
 import { Tag, ChevronRight } from 'lucide-react';
+import { BrandLogo } from '../components/ui/BrandLogo';
 
 interface BrandsPageProps {
   onNavigate: (path: string) => void;
@@ -31,10 +32,10 @@ export const BrandsPage: React.FC<BrandsPageProps> = ({ onNavigate }) => {
           >
             <div className="space-y-4">
               <div className="h-20 flex items-center justify-center p-3 bg-slate-50 rounded-2xl border border-slate-100 group-hover:bg-blue-50/50 transition">
-                <img
+                <BrandLogo
                   src={brand.logo}
-                  alt={brand.name}
-                  className="max-h-12 max-w-[130px] object-contain group-hover:scale-110 transition duration-300"
+                  name={brand.name}
+                  className="h-12 w-12 max-w-[130px] object-contain group-hover:scale-110 transition duration-300"
                 />
               </div>
 

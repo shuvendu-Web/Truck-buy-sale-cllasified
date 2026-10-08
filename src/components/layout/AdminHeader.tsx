@@ -13,7 +13,7 @@ import {
   AlertTriangle, 
   Info, 
   Inbox, 
-  Car,
+  Truck,
   Trash2
 } from 'lucide-react';
 
@@ -142,7 +142,7 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({ title, subtitle, onNav
                       {/* Icon */}
                       <div className="w-8 h-8 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center shrink-0 mt-0.5">
                         {notif.type === 'approval' ? (
-                          <Car className="w-4 h-4 text-amber-600" />
+                          <Truck className="w-4 h-4 text-amber-600" />
                         ) : notif.type === 'interest' ? (
                           <Inbox className="w-4 h-4 text-blue-600" />
                         ) : notif.type === 'warning' ? (

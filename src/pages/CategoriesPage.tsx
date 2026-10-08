@@ -1,6 +1,6 @@
 import React from 'react';
 import { useMarketplace } from '../context/MarketplaceContext';
-import { Car, ChevronRight, Layers } from 'lucide-react';
+import { Truck, ChevronRight, Layers } from 'lucide-react';
 
 interface CategoriesPageProps {
   onNavigate: (path: string) => void;

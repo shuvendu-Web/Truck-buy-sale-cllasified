@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useMarketplace } from '../../context/MarketplaceContext';
-import { Category, VehicleCategoryType } from '../../types';
+import { Category, VehicleCategoryType, Brand } from '../../types';
 import { FolderTree, Plus, Trash2, Edit3, Save, X, Check, UploadCloud } from 'lucide-react';
 import * as Icons from 'lucide-react';
+import { BrandLogo } from '../../components/ui/BrandLogo';
 
 export const AdminCategoriesPage: React.FC = () => {
   const { categories, saveCategoryItem, deleteCategoryItem } = useMarketplace();
@@ -10,7 +11,7 @@ export const AdminCategoriesPage: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
   const [name, setName] = useState<string>('');
-  const [icon, setIcon] = useState('Car');
+  const [icon, setIcon] = useState('Dump Truck');
   const [description, setDescription] = useState('');
   const [subcategoriesText, setSubcategoriesText] = useState('');
   const [image, setImage] = useState('https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=600&q=80');
@@ -18,7 +19,7 @@ export const AdminCategoriesPage: React.FC = () => {
   const handleEdit = (cat: Category) => {
     setEditId(cat.id);
     setName(cat.name);
-    setIcon(cat.icon || 'Car');
+    setIcon(cat.icon || 'Truck');
     setDescription(cat.description || '');
     setSubcategoriesText(cat.subcategories ? cat.subcategories.join(', ') : '');
     setImage(cat.image || '');
@@ -28,7 +29,7 @@ export const AdminCategoriesPage: React.FC = () => {
   const handleAdd = () => {
     setEditId(null);
     setName('');
-    setIcon('Car');
+    setIcon('Truck');
     setDescription('');
     setSubcategoriesText('');
     setModalOpen(true);
@@ -87,7 +88,7 @@ export const AdminCategoriesPage: React.FC = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {categories.map((cat) => {
-          const IconComp = (Icons as any)[cat.icon] || Icons.Car;
+          const IconComp = (Icons as any)[cat.icon] || Icons.Truck;
           return (
             <div key={cat.id} className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs space-y-4">
               <div className="flex items-center justify-between">
@@ -165,7 +166,7 @@ export const AdminCategoriesPage: React.FC = () => {
                   required
                   value={icon}
                   onChange={(e) => setIcon(e.target.value)}
-                  placeholder="e.g. Car, Truck, Bus, Shield"
+                  placeholder="e.g. Dump Truck, Truck, Bus, Shield"
                   className="w-full p-2.5 rounded-xl border border-slate-200"
                 />
                 <p className="text-[10px] text-slate-400 mt-1">Must be a valid lucide-react icon component name (e.g. Zap, Star)</p>
@@ -211,9 +212,38 @@ export const AdminBrandsPage: React.FC = () => {
   const { brands, saveBrandItem, deleteBrandItem } = useMarketplace();
 
   const [modalOpen, setModalOpen] = useState(false);
+  const [editingBrand, setEditingBrand] = useState<Brand | null>(null);
   const [brandName, setBrandName] = useState('');
   const [brandLogo, setBrandLogo] = useState('');
   const [brandDesc, setBrandDesc] = useState('');
+
+  const openAddModal = () => {
+    setEditingBrand(null);
+    setBrandName('');
+    setBrandLogo('');
+    setBrandDesc('');
+    setModalOpen(true);
+  };
+
+  const openEditModal = (brand: Brand) => {
+    setEditingBrand(brand);
+    setBrandName(brand.name);
+    setBrandLogo(brand.logo);
+    setBrandDesc(brand.description);
+    setModalOpen(true);
+  };
+
+  const handleReset = () => {
+    if (editingBrand) {
+      setBrandName(editingBrand.name);
+      setBrandLogo(editingBrand.logo);
+      setBrandDesc(editingBrand.description);
+    } else {
+      setBrandName('');
+      setBrandLogo('');
+      setBrandDesc('');
+    }
+  };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -229,18 +259,20 @@ export const AdminBrandsPage: React.FC = () => {
   const handleSaveBrand = (e: React.FormEvent) => {
     e.preventDefault();
     saveBrandItem({
-      id: 'brand-' + Date.now(),
+      id: editingBrand ? editingBrand.id : 'brand-' + Date.now(),
       name: brandName,
-      slug: brandName.toLowerCase().replace(/\s+/g, '-'),
+      slug: editingBrand ? editingBrand.slug : brandName.toLowerCase().replace(/\s+/g, '-'),
       logo: brandLogo || `https://logo.clearbit.com/${brandName.toLowerCase().replace(/\s+/g, '')}.com`,
-      category: ['Car', 'SUV'],
+      category: editingBrand ? editingBrand.category : ['Dump Truck', 'Flatbed Truck'],
       description: brandDesc || 'No description provided.',
-      listingCount: 0,
-      active: true,
+      listingCount: editingBrand ? editingBrand.listingCount : 0,
+      active: editingBrand ? editingBrand.active : true,
     });
     setModalOpen(false);
+    setEditingBrand(null);
     setBrandName('');
     setBrandDesc('');
+    setBrandLogo('');
   };
 
   return (
@@ -253,7 +285,7 @@ export const AdminBrandsPage: React.FC = () => {
         </div>
 
         <button
-          onClick={() => setModalOpen(true)}
+          onClick={openAddModal}
           className="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-md transition flex items-center gap-2"
         >
           <Plus className="w-4 h-4" />
@@ -263,10 +295,16 @@ export const AdminBrandsPage: React.FC = () => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {brands.map((b) => (
-          <div key={b.id} className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs space-y-3 flex flex-col justify-between">
+          <div key={b.id} className="relative bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs space-y-3 flex flex-col justify-between group">
+            <button
+              onClick={() => openEditModal(b)}
+              className="absolute top-4 right-4 p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition"
+            >
+              <Edit3 className="w-4 h-4" />
+            </button>
             <div className="space-y-3 text-center">
               <div className="h-16 flex items-center justify-center p-2 bg-slate-50 rounded-2xl">
-                <img src={b.logo} alt={b.name} className="max-h-10 max-w-[120px] object-contain" />
+                <BrandLogo src={b.logo} name={b.name} className="h-10 w-10 max-h-10 max-w-[120px] object-contain" />
               </div>
               <div>
                 <h3 className="font-bold text-sm text-slate-900">{b.name}</h3>
@@ -295,7 +333,7 @@ export const AdminBrandsPage: React.FC = () => {
         <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl space-y-4">
             <div className="flex justify-between items-center border-b pb-3">
-              <h3 className="font-bold text-slate-900">Add Automaker Brand</h3>
+              <h3 className="font-bold text-slate-900">{editingBrand ? 'Edit Automaker Brand' : 'Add Automaker Brand'}</h3>
               <button onClick={() => setModalOpen(false)}><X className="w-5 h-5 text-slate-400" /></button>
             </div>
             <form onSubmit={handleSaveBrand} className="space-y-3 text-xs">
@@ -355,8 +393,9 @@ export const AdminBrandsPage: React.FC = () => {
               </div>
 
               <div className="pt-3 flex justify-end gap-2">
+                <button type="button" onClick={handleReset} className="px-4 py-2 rounded-xl text-slate-600 border border-slate-200 hover:bg-slate-50 mr-auto">Reset</button>
                 <button type="button" onClick={() => setModalOpen(false)} className="px-4 py-2 rounded-xl text-slate-600">Cancel</button>
-                <button type="submit" className="px-4 py-2 rounded-xl bg-blue-600 text-white font-bold">Save Brand</button>
+                <button type="submit" className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold transition-colors">Save Brand</button>
               </div>
             </form>
           </div>

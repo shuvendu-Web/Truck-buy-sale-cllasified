@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useMarketplace } from '../../context/MarketplaceContext';
-import { MessageSquare, Send, User, Car, Clock, ShieldCheck } from 'lucide-react';
+import { MessageSquare, Send, User, Truck, Clock, ShieldCheck } from 'lucide-react';
 
 export const SellerMessagesPage: React.FC = () => {
   const { user } = useAuth();

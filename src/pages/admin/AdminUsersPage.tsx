@@ -14,7 +14,7 @@ import {
   Edit3, 
   Phone, 
   Mail,
-  Car
+  Truck
 } from 'lucide-react';
 
 export const AdminUsersPage: React.FC = () => {

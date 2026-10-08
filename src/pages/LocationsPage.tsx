@@ -19,7 +19,7 @@ export const LocationsPage: React.FC<LocationsPageProps> = ({ onNavigate }) => {
       <div className="text-center max-w-2xl mx-auto space-y-2">
         <span className="text-xs font-bold uppercase tracking-wider text-blue-600">Regional Hubs</span>
         <h1 className="text-3xl font-black text-slate-900 tracking-tight">Vehicles by City & State</h1>
-        <p className="text-sm text-slate-500">Discover verified pre-owned cars, bikes and commercial vehicles available in your city.</p>
+        <p className="text-sm text-slate-500">Discover verified pre-owned dump trucks, tractor trailers and commercial vehicles available in your city.</p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">

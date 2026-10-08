@@ -3,7 +3,7 @@ import { useMarketplace } from '../../context/MarketplaceContext';
 import { useAuth } from '../../context/AuthContext';
 import { 
   LayoutDashboard, 
-  Car, 
+  Truck, 
   CheckSquare, 
   Users, 
   FolderTree, 
@@ -36,7 +36,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({ currentPath, onNavig
   const menuItems = [
     { label: 'Dashboard', path: '/admin', icon: LayoutDashboard },
     { label: 'Pending Approvals', path: '/admin/approvals', icon: CheckSquare, badge: pendingApprovalsCount, badgeColor: 'bg-rose-500' },
-    { label: 'All Listings', path: '/admin/listings', icon: Car },
+    { label: 'All Listings', path: '/admin/listings', icon: Truck },
     { label: 'User Accounts', path: '/admin/users', icon: Users },
     { label: 'Buyer Interests', path: '/admin/interests', icon: Inbox },
     { label: 'Messages', path: '/admin/messages', icon: MessageSquare },
@@ -59,7 +59,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({ currentPath, onNavig
           title="SatyaDeal Admin"
         >
           <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-500 to-indigo-600 flex items-center justify-center text-white shadow-md shrink-0">
-            <Car className="w-5 h-5" />
+            <Truck className="w-5 h-5" />
           </div>
           {!isCollapsed && (
             <div>

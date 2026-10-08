@@ -5,7 +5,7 @@ import { StorageService } from '../../lib/storage';
 import { StatusBadge } from '../../components/ui/StatusBadge';
 import { Vehicle } from '../../types';
 import { 
-  Car, 
+  Truck, 
   CheckCircle2, 
   Clock, 
   XCircle, 
@@ -44,9 +44,9 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
   const activeSellersCount = allUsers.filter(u => u.role === 'seller').length;
 
   // Breakdown by body type
-  const carsCount = vehicles.filter(v => v.category === 'Car').length;
-  const bikesCount = vehicles.filter(v => v.category === 'Bike').length;
-  const suvsCount = vehicles.filter(v => v.category === 'SUV').length;
+  const carsCount = vehicles.filter(v => v.category === 'Dump Truck').length;
+  const bikesCount = vehicles.filter(v => v.category === 'Tractor Trailer').length;
+  const suvsCount = vehicles.filter(v => v.category === 'Flatbed Truck').length;
   const trucksCount = vehicles.filter(v => v.category === 'Truck').length;
   const vansCount = vehicles.filter(v => v.category === 'Van').length;
   const othersCount = vehicles.filter(v => v.category === 'Other').length;
@@ -98,7 +98,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Listings</span>
             <div className="w-7 h-7 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
-              <Car className="w-4 h-4" />
+              <Truck className="w-4 h-4" />
             </div>
           </div>
           <span className="text-2xl font-black text-slate-900 block">{totalListings}</span>
@@ -330,7 +330,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
             <div className="space-y-3 pt-2">
               <div className="space-y-1">
                 <div className="flex justify-between text-xs font-semibold">
-                  <span className="text-slate-600">Cars ({carsCount})</span>
+                  <span className="text-slate-600">Dump Trucks ({carsCount})</span>
                   <span className="text-slate-900 font-bold">{Math.round((carsCount / totalListings) * 100 || 0)}%</span>
                 </div>
                 <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
@@ -340,7 +340,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
 
               <div className="space-y-1">
                 <div className="flex justify-between text-xs font-semibold">
-                  <span className="text-slate-600">Bikes ({bikesCount})</span>
+                  <span className="text-slate-600">Tractor Trailers ({bikesCount})</span>
                   <span className="text-slate-900 font-bold">{Math.round((bikesCount / totalListings) * 100 || 0)}%</span>
                 </div>
                 <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
@@ -350,7 +350,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
 
               <div className="space-y-1">
                 <div className="flex justify-between text-xs font-semibold">
-                  <span className="text-slate-600">SUVs ({suvsCount})</span>
+                  <span className="text-slate-600">Flatbed Trucks ({suvsCount})</span>
                   <span className="text-slate-900 font-bold">{Math.round((suvsCount / totalListings) * 100 || 0)}%</span>
                 </div>
                 <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden">

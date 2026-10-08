@@ -1,5 +1,5 @@
 import React from 'react';
-import { Car, ShieldCheck, Mail, Phone, MapPin, Heart, ArrowRight } from 'lucide-react';
+import { Truck, ShieldCheck, Mail, Phone, MapPin, Heart, ArrowRight } from 'lucide-react';
 
 interface FooterProps {
   onNavigate: (path: string) => void;
@@ -18,7 +18,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               className="flex items-center gap-2.5 cursor-pointer"
             >
               <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white shadow-lg">
-                <Car className="w-6 h-6" />
+                <Truck className="w-6 h-6" />
               </div>
               <span className="text-2xl font-extrabold tracking-tight">
                 <span className="text-green-600">Satya</span><span className="text-blue-500">Deal</span>
@@ -26,7 +26,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             </div>
             
             <p className="text-sm text-slate-400 max-w-sm leading-relaxed">
-              SatyaDeal is India's most trusted classified vehicle marketplace. Buy and sell verified cars, bikes, trucks, and SUVs directly with verified owners.
+              SatyaDeal is India's most trusted classified vehicle marketplace. Buy and sell verified dump trucks, tractor trailers, trucks, and Flatbed Trucks directly with verified owners.
             </p>
 
             <div className="pt-2 flex items-center gap-3 text-xs text-slate-400">
